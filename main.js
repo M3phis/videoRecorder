@@ -1,4 +1,16 @@
 // Prefer camera resolution nearest to 1280x720.
+
+/*  
+         TODOS:
+
+get audio input select
+get audio output select
+
+separate into MVC model
+separate getStream function into get stream and function to render the DOM
+
+*/
+
 const constraints = {
   audio: true,
   video: {
