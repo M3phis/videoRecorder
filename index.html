@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tomer's Recorder</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <section class="layout">
+      <div class="header">Tomer's Recorder</div>
+      <div class="leftSide">People Panel</div>
+      <div class="body">
+        <div class="video-tile">
+          <div class="video">
+            <video src=""></video>
+          </div>
+          <div class="user-label">Tomer Guest</div>
+        </div>
+      </div>
+      <div class="rightSide">Options Panel</div>
+      <div class="footer">
+        <button class="record">Record</button>
+        <button class="mute-mic">Mute Mic</button>
+        <select
+          onchange="onSetCamera(value)"
+          class="cam-select"
+          name="mic-input"
+          id="mic-input"
+        >
+          <option value="">Choose Cam</option>
+        </select>
+        <button class="mute-vid">Mute Video</button>
+        <button class="screenshare">Share</button>
+      </div>
+    </section>
+
+    <script src="main.js"></script>
+  </body>
+</html>
