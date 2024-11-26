@@ -21,66 +21,64 @@ const constraints = {
   },
 };
 
-navigator.mediaDevices
-  .getUserMedia(constraints)
-  .then((mediaStream) => {
-    console.log("this is a media stream: ", mediaStream);
-    const video = document.querySelector("video");
-    console.log("this is a video ele: ", video);
-    video.srcObject = mediaStream;
-    video.onloadedmetadata = () => {
-      video.play();
-    };
-  })
-  .catch((err) => {
-    // always check for errors at the end.
-    console.error(`${err.name}: ${err.message}`);
-  });
+async function onInit() {
+  //model
 
-const devices = navigator.mediaDevices
-  .enumerateDevices()
-  .then((devices) => {
-    //got the devices
-    //get video inputs, get their names and put in the select element
-    console.log(devices);
-    const videoInputs = devices.filter(
-      (device) => device.kind === "videoinput"
-    );
-    //render them
+  const videoDevices = await getVideoDevices();
 
-    const elSelect = document.querySelector(".cam-select");
-    console.log(videoInputs);
-    var strHTML = videoInputs.map((input) => {
-      return `
-          <option value="${input.deviceId}">${input.label}</option>
-        `;
-    });
-    console.log("str html", strHTML.join(""));
-    elSelect.innerHTML = strHTML;
-  })
-  .catch((err) => console.log("this is your error: ", err));
+  const videoStream = await getVideoMediaStream(videoDevices[0].deviceId);
+  console.log("Video stream -", videoStream);
+  //render
+  setVideoMediaStream(videoStream);
 
-function onSetCamera(id) {
-  console.log("camera id: ", id);
-  getMediaStream(id);
+  //set video input select
+  setVideoInputList(videoDevices);
 }
 
-function getMediaStream(id) {
-  constraints.video.deviceId = id;
-
-  navigator.mediaDevices
-    .getUserMedia(constraints)
-    .then((mediaStream) => {
-      console.log("this is a media stream: ", mediaStream);
-      const video = document.querySelector("video");
-      console.log("this is a video ele: ", video);
-      video.srcObject = mediaStream;
-      video.onloadedmetadata = () => {
-        video.play();
-      };
+async function getVideoDevices() {
+  return navigator.mediaDevices
+    .enumerateDevices()
+    .then((devices) => {
+      const videoInputs = devices.filter((device) => {
+        return device.kind === "videoinput";
+      });
+      return videoInputs;
     })
-    .catch((err) => {
-      // always check for errors at the end.
-      console.error(`${err.name}: ${err.message}`);
-    });
+    .catch((err) => console.log("this is your error: ", err));
+  //render them
+}
+
+async function onSetCamera(id) {
+  const stream = await getVideoMediaStream(id);
+  setVideoMediaStream(stream);
+}
+
+async function getVideoMediaStream(id) {
+  constraints.video.deviceId = id;
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+    return stream;
+  } catch {
+    console.error("Error accesing video stream", error);
+    throw error;
+  }
+}
+
+function setVideoMediaStream(videoStream) {
+  console.log("setting");
+  const video = document.querySelector("video");
+  video.srcObject = videoStream;
+  video.onloadedmetadata = () => video.play();
+}
+
+function setVideoInputList(videoInputs) {
+  const elSelect = document.querySelector(".cam-select");
+  var strHTML = videoInputs.map((input) => {
+    return `
+        <option value="${input.deviceId}">${input.label}</option>
+      `;
+  });
+  console.log("str html", strHTML.join(""));
+  elSelect.innerHTML = strHTML;
 }
