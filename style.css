@@ -58,9 +58,22 @@ body {
   position: relative;
 }
 
+@media (width <= 1250px) {
+  video {
+    /* width: 500px; */
+    object-fit: cover;
+  }
+}
+
 .video-tile {
   text-align: center;
   position: relative;
+  object-fit: cover;
+
+  /* width: 400px;
+  overflow: hidden;
+  display: block;
+  height: 460px; */
 }
 
 .video-placeholder {

@@ -21,16 +21,26 @@
       <div class="rightSide">Options Panel</div>
       <div class="footer">
         <button class="record">Record</button>
-        <button class="mute-mic">Mute Mic</button>
         <select
-          onchange="onSetCamera(value)"
-          class="cam-select"
+          onchange="onSetMic(value)"
+          class="mic-select"
           name="mic-input"
           id="mic-input"
         >
-          <option value="">Choose Cam</option>
+          <option value="">Choose Mic</option>
+        </select>
+        <button class="mute-mic">Mute Mic</button>
+
+        <select
+          onchange="onSetVideo(value)"
+          class="video-select"
+          name="video-input"
+          id="video-input"
+        >
+          <option value="">Choose Camera</option>
         </select>
         <button class="mute-vid">Mute Video</button>
+
         <button class="screenshare">Share</button>
       </div>
     </section>
